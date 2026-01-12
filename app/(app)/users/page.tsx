@@ -42,14 +42,6 @@ export default async function UsersPage({
 
   }
 
-  async function logout() {
-    "use server";
-
-    await logoutUser();
-
-    redirect("/auth/login");
-  }
-
   return (
     <div>
       <h1>Users: </h1>
@@ -70,10 +62,6 @@ export default async function UsersPage({
           <li key={i}>{u.name}</li>
         ))}
       </ul>      
-
-      <form action={logout}>
-        <button type="submit">Logout</button>
-      </form>
 
     </div>
 
