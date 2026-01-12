@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
-
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { logoutUser } from "@/lib/auth/utils";
 
 async function getUsers() {
   const data = await fetch("http://localhost:3000/api/users", {
@@ -38,8 +38,16 @@ export default async function UsersPage({
     });
 
     //now the current page will get stale as a new user is added via api so we revalidate the path
-
     revalidatePath("/users");
+
+  }
+
+  async function logout() {
+    "use server";
+
+    await logoutUser();
+
+    redirect("/auth/login");
   }
 
   return (
@@ -61,7 +69,12 @@ export default async function UsersPage({
         {users.map((u:any , i: number) => (
           <li key={i}>{u.name}</li>
         ))}
-      </ul>
+      </ul>      
+
+      <form action={logout}>
+        <button type="submit">Logout</button>
+      </form>
+
     </div>
 
   );
